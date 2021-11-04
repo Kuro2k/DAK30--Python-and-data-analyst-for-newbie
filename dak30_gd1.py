@@ -1,9 +1,10 @@
 import pandas as pd
 import xlsxwriter
 import xlwt
+import psycopg2
 from pytrends.request import TrendReq
 trends = TrendReq()
-df = pd.read_excel('key_trends.xlsx', sheet_name='key_word')
+df = pd.read_excel('keytrends.xlsx', sheet_name='key_word')
 # create a Pandas Excel writer using XlsxWriter as the engine
 writer = pd.ExcelWriter('vn_trend_2020.xlsx', engine='xlsxwriter')
 for col_name in df.columns:
@@ -23,7 +24,6 @@ for col_name in df.columns:
         if not data.empty:
             data = data.drop(labels=['isPartial'], axis='columns')  # Xoa cot "isPartial" do lu lieu = false
         total_Data = pd.concat([total_Data, data], axis='columns')
-
-    total_Data.to_excel(writer, sheet_name=col_name)
+    total_Data.to_excel(writer, sheet_name=col_name.replace('/', '_'))
 # close the Pandas Excel writer and output the Excel file
 writer.save()
